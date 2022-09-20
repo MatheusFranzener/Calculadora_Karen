@@ -1,77 +1,87 @@
 import java.util.Scanner;
 
+// Apresente um menu para escolher o calculo a ser
+// realizado ( soma, multiplicacao, divisao, subtracao, potenciacao, porcentagem e raiz quadrada)
+// Possibilite informar a quantidade de numeros a serem inseridos
+// Solicite a quantidade de numeros infromada pelo usuario ( minino 1, maximo 5)
+// Realize e apresente o resultado do calculo
+
 public class Main {
+
+    static Scanner sc = new Scanner(System.in);
+    static Calculadora calculadora = new Calculadora();
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        menuOperacoes();
+    }
 
-        int opcao = 0;
-        double soma = 0, numero = 0, numero2 = 0, multiplicacao = 0, divisao = 0, subtracao = 0, potenciacao = 0,
-                porcentagem = 0, raiz = 0;
-
+    public static void menuOperacoes(){
         System.out.println(
                 "Escola o cálculo: \n1- Soma \n2- Multiplicação \n3- Divisão \n4- Subtração \n5- Potenciação \n6- Porcentagem \n7- Raíz Quadrada: ");
-        opcao = sc.nextInt();
+        int opcao = sc.nextInt();
 
-        System.out.println("Informe a quantidade de números 1-5: ");
-        int qnt = sc.nextInt();
-
-        if (opcao == 3 && qnt != 2 || opcao == 4 && qnt != 2 || opcao == 5 && qnt != 2 || opcao == 6 && qnt != 2) {
+        if (opcao < 1 || opcao > 7) {
             System.out.println("Opcao inválida");
-            main(args);
-        } else if (opcao == 7 && qnt != 1) {
-            System.out.println("Opcao inválida!");
-            main(args);
-        } else if (opcao != 1 && opcao != 2 && opcao != 7) {
-            System.out.println("Informe o numero: ");
-            numero = sc.nextDouble();
-            System.out.println("Informe o outro número: ");
-            numero2 = sc.nextDouble();
+            menuOperacoes();
+        } else {
+            informarNumeros(opcao);
+        }
+    }
+
+    public static void informarNumeros(int opcao){
+        double num1 = 0, num2 = 0;
+        int qnt = 0;
+
+        if(opcao == 1 || opcao == 2 || opcao == 4){
+            System.out.println("Informe a quantidade de números 1 - 5: ");
+            qnt = sc.nextInt();
+
+            if(qnt < 1 || qnt > 5){
+                System.out.println("Número inválidos!");
+                informarNumeros(opcao);
+            }
+        } else {
+            System.out.println("Informe o primeiro número: ");
+            num1 = sc.nextDouble();
+            System.out.println("Informe o segundo número: ");
+            num2 = sc.nextDouble();
         }
 
-        switch (opcao) {
+        switch(opcao){
             case 1:
-                for (int i = 0; i < qnt; i++) {
+                for(int i = 0; i < qnt; i++){
                     System.out.println("Informe o número: ");
-                    numero = sc.nextDouble();
-                    switch (opcao) {
-                        case 1:
-                            soma += numero;
-                            break;
-                        case 2:
-                            multiplicacao *= numero;
-                            break;
-                    }
+                    calculadora.somar(sc.nextDouble());
                 }
-                System.out.println(soma);
                 break;
             case 2:
-                System.out.println(multiplicacao);
+                for(int i = 0; i < qnt; i++){
+                    System.out.println("Informe o número: ");
+                    calculadora.multiplicar(sc.nextDouble());
+                }
                 break;
             case 3:
-                divisao = numero / numero2;
-                System.out.println(divisao);
+                calculadora.divisao(num1,num2);
                 break;
             case 4:
-                subtracao = numero - numero2;
-                System.out.println(subtracao);
+                for(int i = 0; i < qnt; i++){
+                    System.out.println("Informe o número: ");
+                    calculadora.subtrair(sc.nextDouble());
+                }
                 break;
             case 5:
-                potenciacao = Math.pow(numero, numero2);
-                System.out.println(potenciacao);
+                calculadora.potenciacao(num1, num2);
                 break;
             case 6:
-                porcentagem = numero * (numero2 / 100);
-                System.out.println(porcentagem);
+                calculadora.porcentagem();
                 break;
             case 7:
-                System.out.println("Informe o número da raiz quadrada: ");
-                numero = sc.nextDouble();
-                raiz = Math.sqrt(numero);
-                System.out.println(raiz);
+                calculadora.divisao(num1,num2);
                 break;
         }
 
-        sc.close();
-
+        System.out.println("Resultado: " + calculadora.getResultado());
+        calculadora.resetar();
+        menuOperacoes();
     }
 }
